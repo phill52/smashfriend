@@ -54,12 +54,18 @@ All messages are sent and received in JSON format with the following structure:
 
 ```json
 {
-    action: string; // "join", "leave", "message", "system", "get users"
-    user: string; // username
-    body: any; // Message content string or JSON
-    room: string; // room ID
+    "action": "message",
+    "room": "0",
+    "user": "Alice",
+    "body": null
 }
 ```
+
+There are 4 valid actions `join, message, get users, leave`
+
+For now, there are 3 hardcoded rooms:`0, 1, 2`.
+
+Body can be strings, more JSON, or null based on the action.
 
 ## Flow
 
@@ -68,7 +74,7 @@ All messages are sent and received in JSON format with the following structure:
 ```json
 {
     "action": "join",
-    "room": "0", // Room ID (0-2)
+    "room": "0",
     "user": "username",
     "body": null
 }
