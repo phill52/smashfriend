@@ -1,11 +1,9 @@
-# SmashFriend Backend
-
-A Go backend API using GORM and Gorilla Mux with PostgreSQL.
+# Smashfriend Backend
 
 ## Prerequisites
 
 -   Go 1.24.3 or higher
--   PostgreSQL database
+-   Docker
 
 ## Setup
 
@@ -15,64 +13,35 @@ A Go backend API using GORM and Gorilla Mux with PostgreSQL.
     go mod tidy
     ```
 
-2. **Set up PostgreSQL database:**
+2. **Set up the env:**
 
-    - Create a database named `smashfriend`
-    - Update the database configuration in `database/database.go` if needed:
-        ```go
-        func DefaultConfig() *Config {
-            return &Config{
-                Host:     "localhost",
-                User:     "postgres",
-                Password: "postgres",
-                DBName:   "smashfriend",
-                Port:     "5432",
-                SSLMode:  "disable",
-            }
-        }
-        ```
+    There's an `env.example` that has everything we need for now. We may need to add more thing and instructions to it later,
+    but for now this is all we need. You can just run
 
-3. **Run the application:**
-    ```bash
-    go run main.go
+    ```sh
+    cp env.example .env
     ```
 
-## API Endpoints
+    to create the env file.
 
--   `GET /health` - Health check
--   `GET /api/users` - Get all users
--   `POST /api/users` - Create a new user
--   `GET /api/games` - Get all games
--   `POST /api/games` - Create a new game
+3. **Set up the database:**
+   The database is set up in docker for now. If you want to run your own database, that's fine, just change the env file accordingly.
+   To run the docker database, just run
 
-## Project Structure
+    ```sh
+    docker-compose up -d
+    ```
 
-```
-backend/
-├── main.go          # Application entry point
-├── go.mod           # Go module dependencies
-├── database/
-│   └── database.go  # Database connection and configuration
-├── models/
-│   └── models.go    # GORM models
-├── handlers/
-│   └── handlers.go  # HTTP handlers
-└── README.md        # This file
-```
+    Whenever you are done with development, make sure you run this command to stop it so you don't waste resources on your computer.
 
-## Database Models
+    ```sh
+    docker-compose stop
+    ```
 
--   **User**: ID, Username, Email, Password, timestamps
--   **Game**: ID, Title, Description, Genre, timestamps
+    If you ever need to check stuff in the database directly, there is a script, `dbshell.sh`, that runs postgres in the command line.
 
-The database schema will be automatically migrated when the application starts.
+4. **Run the application**
 
-## Database Configuration
-
-The database connection is handled in the `database` package:
-
--   `database.DefaultConfig()` - Returns default PostgreSQL configuration
--   `database.Connect(config)` - Establishes database connection
--   `database.AutoMigrate(db, models...)` - Runs database migrations
-
-You can customize the database configuration by modifying the `DefaultConfig()` function or creating a custom `Config` struct.
+    ```sh
+    go run main.go
+    ```
