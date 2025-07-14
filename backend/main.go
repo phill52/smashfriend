@@ -25,7 +25,6 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/users", controllers.GetUsers)
-	router.GET("/users/page/:page", controllers.GetUsers)
 	router.GET("/users/:id", controllers.GetUser)
 	router.POST("/users", controllers.CreateUser)
 

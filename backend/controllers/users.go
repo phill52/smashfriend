@@ -5,11 +5,24 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"smashfriend/models"
 	"smashfriend/repositories"
+	"smashfriend/utils"
+	"strconv"
 )
 
 func GetUsers(c *gin.Context) {
-	users, err := repositories.GetUsers()
+
+	pageStr := c.DefaultQuery("page", "1")
+	limitStr := c.DefaultQuery("limit", "10")
+
+	page, _ := strconv.Atoi(pageStr)
+	limit, _ := strconv.Atoi(limitStr)
+
+	pagination := utils.GetPaginationData(page, limit, models.User{})
+
+	users, err := repositories.GetUsers(pagination.Offset, pagination.Limit)
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -20,6 +33,7 @@ func GetUsers(c *gin.Context) {
 
 func GetUser(c *gin.Context) {
 	id := c.Param("id")
+
 	user, err := repositories.GetUser(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
