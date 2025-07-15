@@ -5,11 +5,20 @@ import (
 
 	"smashfriend/database"
 	"smashfriend/models"
+	"smashfriend/utils"
 )
 
-func GetUsers() ([]models.User, error) {
+func GetUsers(page, limit int) ([]models.User, error) {
 	var users []models.User
-	result := database.DB.Find(&users)
+	query := database.DB.Model(&users)
+
+	paginatedQuery, err := utils.GetPagination(query, page, limit)
+
+	if err != nil {
+		return nil, errors.New("bad query parameter")
+	}
+
+	result := paginatedQuery.Find(&users)
 	return users, result.Error
 }
 

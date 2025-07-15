@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"smashfriend/repositories"
-	"smashfriend/utils"
 )
 
 func GetUsers(c *gin.Context) {
@@ -26,14 +25,9 @@ func GetUsers(c *gin.Context) {
 		return
 	}
 
-	pagination, err := utils.GetPaginationData(page, limit)
+	//paginatedQuery, err := utils.GetPagination(database.DB, page, limit)
 
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "bad query parameter"})
-		return
-	}
-
-	users, err := repositories.GetUsers()
+	users, err := repositories.GetUsers(page, limit)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

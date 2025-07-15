@@ -6,8 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
-
 type PaginationData struct {
 	Offset     int `json:"offset"`
 	Limit      int `json:"limit"`
@@ -30,4 +28,14 @@ func GetPaginationData(page int, limit int) (*PaginationData, error) {
 		Limit:      limit,
 		PageNumber: page,
 	}, nil
+}
+
+func GetPagination(db *gorm.DB, page, limit int) (*gorm.DB, error) {
+	pagination, err := GetPaginationData(page, limit)
+
+	if err != nil {
+		return nil, errors.New("error")
+	}
+
+	return db.Limit(pagination.Limit).Offset(pagination.Offset), nil
 }
