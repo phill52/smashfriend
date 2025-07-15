@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"errors"
+
 	"gorm.io/gorm"
 )
 
@@ -12,12 +14,20 @@ type PaginationData struct {
 	PageNumber int `json:"page"`
 }
 
-func GetPaginationData(page int, limit int) PaginationData {
+func GetPaginationData(page int, limit int) (*PaginationData, error) {
 	offset := (page - 1) * limit
 
-	return PaginationData{
+	if limit > 500 {
+		return nil, errors.New("limit parameter is greater than max 500")
+	}
+
+	if page < 1 {
+		return nil, errors.New("page parameter cannot be less than 1")
+	}
+
+	return &PaginationData{
 		Offset:     offset,
 		Limit:      limit,
 		PageNumber: page,
-	}
+	}, nil
 }

@@ -26,8 +26,14 @@ func GetUsers(c *gin.Context) {
 		return
 	}
 
-	pagination := utils.GetPaginationData(page, limit)
-	users, err := repositories.GetUsers(pagination.Offset, pagination.Limit)
+	pagination, err := utils.GetPaginationData(page, limit)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "bad query parameter"})
+		return
+	}
+
+	users, err := repositories.GetUsers()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

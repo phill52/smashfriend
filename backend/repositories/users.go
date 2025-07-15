@@ -7,9 +7,9 @@ import (
 	"smashfriend/models"
 )
 
-func GetUsers(offset, limit int) ([]models.User, error) {
+func GetUsers() ([]models.User, error) {
 	var users []models.User
-	result := database.DB.Limit(limit).Offset(offset).Find(&users)
+	result := database.DB.Find(&users)
 	return users, result.Error
 }
 
