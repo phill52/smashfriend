@@ -12,14 +12,7 @@ type PaginationData struct {
 	PageNumber int `json:"page"`
 }
 
-func GetPaginationData(page int, limit int, model interface{}) PaginationData {
-	// Calculate total pages
-	// var totalRows int64
-	// DB.Model(model).Count(&totalRows)
-	// fmt.Printf("total rows %d", totalRows)
-	//totalPages := math.Ceil(float64(totalRows) / float64(limit))
-	//fmt.Printf("total pages %g", totalPages)
-
+func GetPaginationData(page int, limit int) PaginationData {
 	offset := (page - 1) * limit
 
 	return PaginationData{

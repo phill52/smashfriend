@@ -2,25 +2,31 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
-	"smashfriend/models"
 	"smashfriend/repositories"
 	"smashfriend/utils"
-	"strconv"
 )
 
 func GetUsers(c *gin.Context) {
-
 	pageStr := c.DefaultQuery("page", "1")
 	limitStr := c.DefaultQuery("limit", "10")
 
-	page, _ := strconv.Atoi(pageStr)
-	limit, _ := strconv.Atoi(limitStr)
+	var page, limit int
+	var err error
 
-	pagination := utils.GetPaginationData(page, limit, models.User{})
+	if page, err = strconv.Atoi(pageStr); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "page parameter not valid"})
+		return
+	}
+	if limit, err = strconv.Atoi(limitStr); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "limit parameter not valid"})
+		return
+	}
 
+	pagination := utils.GetPaginationData(page, limit)
 	users, err := repositories.GetUsers(pagination.Offset, pagination.Limit)
 
 	if err != nil {
