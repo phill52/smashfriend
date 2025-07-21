@@ -15,7 +15,7 @@ func GetUsers(page, limit int) ([]models.User, error) {
 	paginatedQuery, err := utils.GetPagination(query, page, limit)
 
 	if err != nil {
-		return nil, errors.New("bad query parameter")
+		return nil, err
 	}
 
 	result := paginatedQuery.Find(&users)

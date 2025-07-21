@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 
 	"smashfriend/repositories"
+	"smashfriend/utils"
 )
 
 func GetUsers(c *gin.Context) {
@@ -25,13 +27,18 @@ func GetUsers(c *gin.Context) {
 		return
 	}
 
-	//paginatedQuery, err := utils.GetPagination(database.DB, page, limit)
-
 	users, err := repositories.GetUsers(page, limit)
 
+	var paginationErr *utils.PaginationError
+
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		if errors.As(err, &paginationErr) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": paginationErr.Error()})
+			return
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, users)
