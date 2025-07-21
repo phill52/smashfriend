@@ -17,10 +17,10 @@ type PaginationError struct {
 }
 
 func (e PaginationError) Error() string {
-	return fmt.Sprintln(e.message)
+	return fmt.Sprint(e.message)
 }
 
-func GetPaginationData(page int, limit int) (*PaginationData, error) {
+func PaginateData(page int, limit int) (*PaginationData, error) {
 	offset := (page - 1) * limit
 
 	if limit > 500 {
@@ -39,8 +39,7 @@ func GetPaginationData(page int, limit int) (*PaginationData, error) {
 }
 
 func GetPagination(db *gorm.DB, page, limit int) (*gorm.DB, error) {
-	pagination, err := GetPaginationData(page, limit)
-
+	pagination, err := PaginateData(page, limit)
 	if err != nil {
 		return nil, err
 	}

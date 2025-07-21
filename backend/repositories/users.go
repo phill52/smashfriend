@@ -13,7 +13,6 @@ func GetUsers(page, limit int) ([]models.User, error) {
 	query := database.DB.Model(&users)
 
 	paginatedQuery, err := utils.GetPagination(query, page, limit)
-
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +24,6 @@ func GetUsers(page, limit int) ([]models.User, error) {
 func GetUser(id string) (*models.User, error) {
 	var user models.User
 	result := database.DB.First(&user, id)
-
 	if result.Error != nil {
 		return nil, result.Error
 	}

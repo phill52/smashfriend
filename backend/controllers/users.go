@@ -15,22 +15,19 @@ func GetUsers(c *gin.Context) {
 	pageStr := c.DefaultQuery("page", "1")
 	limitStr := c.DefaultQuery("limit", "10")
 
-	var page, limit int
-	var err error
-
-	if page, err = strconv.Atoi(pageStr); err != nil {
+	page, err := strconv.Atoi(pageStr)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "page parameter not valid"})
 		return
 	}
-	if limit, err = strconv.Atoi(limitStr); err != nil {
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "limit parameter not valid"})
 		return
 	}
 
-	users, err := repositories.GetUsers(page, limit)
-
 	var paginationErr *utils.PaginationError
-
+	users, err := repositories.GetUsers(page, limit)
 	if err != nil {
 		if errors.As(err, &paginationErr) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": paginationErr.Error()})
