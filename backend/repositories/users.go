@@ -12,7 +12,7 @@ func GetUsers(page, limit int) ([]models.User, error) {
 	var users []models.User
 	query := database.DB.Model(&users)
 
-	paginatedQuery, err := utils.GetPagination(query, page, limit)
+	paginatedQuery, err := utils.PaginateData(query, page, limit)
 	if err != nil {
 		return nil, err
 	}
