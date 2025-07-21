@@ -1,18 +1,41 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
 	"smashfriend/repositories"
+	"smashfriend/utils"
 )
 
 func GetUsers(c *gin.Context) {
-	users, err := repositories.GetUsers()
+	pageStr := c.DefaultQuery("page", "1")
+	limitStr := c.DefaultQuery("limit", "10")
+
+	page, err := strconv.Atoi(pageStr)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "page parameter not valid"})
 		return
+	}
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "limit parameter not valid"})
+		return
+	}
+
+	var paginationErr *utils.PaginationError
+	users, err := repositories.GetUsers(page, limit)
+	if err != nil {
+		if errors.As(err, &paginationErr) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": paginationErr.Error()})
+			return
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, users)
@@ -20,6 +43,7 @@ func GetUsers(c *gin.Context) {
 
 func GetUser(c *gin.Context) {
 	id := c.Param("id")
+
 	user, err := repositories.GetUser(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
