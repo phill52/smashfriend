@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"errors"
-	"fmt"
 
 	"smashfriend/database"
 	"smashfriend/models"
@@ -25,7 +24,6 @@ func GetUsers(page, limit int) ([]models.User, error) {
 func GetUser(id string) (*models.User, error) {
 	var user models.User
 	result := database.DB.First(&user, id)
-	fmt.Printf("%v", *result)
 	if result.Error != nil {
 		return nil, result.Error
 	}

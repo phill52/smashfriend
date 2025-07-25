@@ -17,7 +17,12 @@ func GetUsers(c *gin.Context) {
 
 	page, err := strconv.Atoi(pageStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "page parameter not valid"})
+		response, err := repositories.GetResponseWithoutPagination(nil, http.StatusBadRequest, "page parameter not valid")
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 	limit, err := strconv.Atoi(limitStr)
@@ -38,7 +43,13 @@ func GetUsers(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, users)
+	response, err := repositories.GetResponse(users, page, limit, http.StatusOK, "Success")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func GetUser(c *gin.Context) {
@@ -49,7 +60,13 @@ func GetUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, user)
+
+	response, err := repositories.GetResponseWithoutPagination(user, http.StatusOK, "Success")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, response)
 }
 
 func CreateUser(c *gin.Context) {
