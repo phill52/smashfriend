@@ -36,14 +36,14 @@ func GetPaginationData(db *gorm.DB, page int, limit int) (*PaginationData, error
 
 	var totalItems int64
 	db.Count(&totalItems)
-	totalPages := math.Ceil(float64(totalItems) / float64(limit))
+	totalPages := int(math.Ceil(float64(totalItems) / float64(limit)))
 
 	return &PaginationData{
 		Offset:     offset,
 		Limit:      limit,
 		PageNumber: page,
 		TotalItems: totalItems,
-		TotalPages: int(totalPages),
+		TotalPages: totalPages,
 	}, nil
 }
 
