@@ -27,7 +27,6 @@ func main() {
 	router.GET("/users", controllers.GetUsers)
 	router.GET("/users/:id", controllers.GetUser)
 	router.POST("/users", controllers.CreateUser)
-
 	log.Println("Server starting on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

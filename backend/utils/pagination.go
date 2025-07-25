@@ -2,14 +2,17 @@ package utils
 
 import (
 	"fmt"
+	"math"
 
 	"gorm.io/gorm"
 )
 
 type PaginationData struct {
-	Offset     int `json:"offset"`
-	Limit      int `json:"limit"`
-	PageNumber int `json:"page"`
+	Offset     int   `json:"offset"`
+	Limit      int   `json:"limit"`
+	PageNumber int   `json:"currentPage"`
+	TotalItems int64 `json:"totalItems"`
+	TotalPages int   `json:"totalPages"`
 }
 
 type PaginationError struct {
@@ -20,7 +23,7 @@ func (e PaginationError) Error() string {
 	return fmt.Sprint(e.message)
 }
 
-func GetPaginationData(page int, limit int) (*PaginationData, error) {
+func GetPaginationData(db *gorm.DB, page int, limit int) (*PaginationData, error) {
 	offset := (page - 1) * limit
 
 	if limit > 500 {
@@ -31,15 +34,21 @@ func GetPaginationData(page int, limit int) (*PaginationData, error) {
 		return nil, &PaginationError{"page cannot be less than 1"}
 	}
 
+	var totalItems int64
+	db.Count(&totalItems)
+	totalPages := math.Ceil(float64(totalItems) / float64(limit))
+
 	return &PaginationData{
 		Offset:     offset,
 		Limit:      limit,
 		PageNumber: page,
+		TotalItems: totalItems,
+		TotalPages: int(totalPages),
 	}, nil
 }
 
 func PaginateData(db *gorm.DB, page, limit int) (*gorm.DB, error) {
-	pagination, err := GetPaginationData(page, limit)
+	pagination, err := GetPaginationData(db, page, limit)
 	if err != nil {
 		return nil, err
 	}
