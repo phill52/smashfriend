@@ -26,8 +26,8 @@ func (e PaginationError) Error() string {
 func GetPaginationData(db *gorm.DB, page int, limit int) (*PaginationData, error) {
 	offset := (page - 1) * limit
 
-	if limit > 500 {
-		return nil, &PaginationError{"limit cannot be greater than 500"}
+	if limit > 500 || limit < 1 {
+		return nil, &PaginationError{"limit cannot be greater than 500 or less than 1"}
 	}
 
 	if page < 1 {
