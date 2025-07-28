@@ -6,39 +6,29 @@ import (
 	"smashfriend/utils"
 )
 
-func GetResponse(model interface{}, page int, limit int, statusCode int, message string) *models.Response {
-	query := database.DB.Model(&model)
+func GetResponse(model interface{}, page, limit *int, statusCode int, message string) *models.Response {
+	meta := GetMetaData(message, statusCode)
 
-	paginationData, err := utils.GetPaginationData(query, page, limit)
-	if err != nil {
-		return nil
-	}
-	meta, err := GetMetaData(message, statusCode)
-	if err != nil {
-		return nil
-	}
-	return &models.Response{
-		Data:       model,
-		Pagination: *paginationData,
-		Meta:       *meta,
-	}
-}
-
-func GetResponseWithoutPagination(model interface{}, statusCode int, message string) *models.Response {
-
-	meta, err := GetMetaData(message, statusCode)
-	if err != nil {
-		return nil
-	}
-	return &models.Response{
+	response := &models.Response{
 		Data: model,
 		Meta: *meta,
 	}
+
+	if page != nil && limit != nil {
+		query := database.DB.Model(&model)
+		paginationData, err := utils.GetPaginationData(query, *page, *limit)
+		if err != nil {
+			return nil
+		}
+		response.Pagination = *paginationData
+	}
+
+	return response
 }
 
-func GetMetaData(message string, statusCode int) (*models.Meta, error) {
+func GetMetaData(message string, statusCode int) *models.Meta {
 	return &models.Meta{
 		Message: message,
 		Status:  statusCode,
-	}, nil
+	}
 }
