@@ -17,13 +17,13 @@ func GetUsers(c *gin.Context) {
 
 	page, err := strconv.Atoi(pageStr)
 	if err != nil {
-		response := utils.GetResponse(nil, nil, &page, nil, http.StatusBadRequest, "Page parameter is not valid")
+		response := utils.GetResponse(nil, nil, &page, nil, http.StatusBadRequest, "Page parameter is not a number")
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 	limit, err := strconv.Atoi(limitStr)
 	if err != nil {
-		response := utils.GetResponse(nil, nil, nil, &limit, http.StatusBadRequest, "Limit parameter is not valid")
+		response := utils.GetResponse(nil, nil, nil, &limit, http.StatusBadRequest, "Limit parameter is not a number")
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
