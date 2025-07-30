@@ -1,71 +1,107 @@
-import React from 'react'
+import React from 'react';
 import './PublicChat.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
+import { useEffect, useRef, useState } from 'react';
+
+interface Message {
+    id: number;
+    name: string;
+    time: string;
+    text: string;
+    profileImg: string;
+}
+
+const ROOM_ID = "0";
+const USERNAME = "andre";
 
 function PublicChat() {
-    return (
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [input, setInput] = useState<string>("");
+    const bottomRef = useRef<HTMLDivElement | null>(null);
 
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    const handleSend = () => {
+        if (!input.trim()) return;
+
+    const mockMessage: Message = {
+        id: Date.now(),
+        name: USERNAME,
+        time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+        text: input,
+        profileImg: "/enzoPFP.png",
+    };
+
+        setMessages(prev => [...prev, mockMessage]);
+        setInput("");
+
+    };
+
+    return (
         <div className="main-section">
 
             <div className="public-chat">
-                
+
                 <div className="vert-wrap">
 
-                    {/* Title Text */}
-                    <div className = "title-text">Public Chat</div>
+                    <div className="title-text">Public Chat</div>
 
-                    {/* Chat Log */}
                     <div className="chat-log">
 
-                        <div className="chat-header"></div>
+                        <div className="chat-header" />
 
-                        {/* Message 1 */}
+                        {messages.map((msg) => (
 
-                        <div className="message-header">
+                            <div key={msg.id}>
 
-                            <img src="/enzoPFP.png" alt="enzo pfp" />
+                                <div className="message-header">
 
-                            <div className="name-date-spacing"> 
+                                    <img src={msg.profileImg} alt={`${msg.name} pfp`} />
 
-                                <div className="name-and-date">enzo</div>
-                                <div className="name-and-date">6:14 PM</div>
+                                    <div className="name-date-spacing">
 
-                            </div>
+                                        <div className="name-and-date">{msg.name}</div>
 
-                        </div>
+                                        <div className="name-and-date">{msg.time}</div>
 
-                        <div className="text-message">Hey guys</div>
+                                    </div>
+                                </div>
 
-                        <div className="divider"></div>
+                                <div className="text-message">{msg.text}</div>
 
-                        {/* Message 2 */}
-
-                        <div className="message-header">
-
-                            <img src="/calebPFP.png" alt="enzo pfp" />
-
-                            <div className="name-date-spacing"> 
-
-                                <div className="name-and-date">caleb</div>
-                                <div className="name-and-date">6:17 PM</div>
+                                <div className="divider" />
 
                             </div>
 
-                        </div>
+                        ))}
 
-                        <div className="text-message">Looking for someone to practice w/</div>
-
-                        <div className="divider"></div>
-
-                        
+                        <div ref={bottomRef} />
 
                     </div>
 
+                    <div className="message-component">
+
+                        <input
+
+                            type="text"
+                            placeholder="Message Here"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            className="message-input"
+                            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+
+                        />
+
+                        <FontAwesomeIcon icon={faPaperPlane} className="messageIcon" onClick={handleSend} />
+
+                    </div>
                 </div>
-
             </div>
-
         </div>
-  )
+    );
 }
 
-export default PublicChat
+export default PublicChat;

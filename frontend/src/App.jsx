@@ -5,7 +5,7 @@ import PublicChat from './PublicChat.tsx';
 function App() {
     return (
         <div>
-            <Opening />
+            <PublicChat />
         </div>
     );
 }
