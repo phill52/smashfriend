@@ -27,22 +27,17 @@ func GetPaginationData(db *gorm.DB, page int, limit int) (*PaginationData, error
 	offset := (page - 1) * limit
 
 	if limit > 500 || limit < 1 {
-		fmt.Println("Limit validation failed")
 		return nil, &PaginationError{"limit cannot be greater than 500 or less than 1"}
 	}
 
 	if page < 1 {
-		fmt.Println("Page validation failed")
 		return nil, &PaginationError{"page cannot be less than 1"}
 	}
 
 	var totalItems int64
-	if err := db.Count(&totalItems).Error; err != nil {
-		fmt.Printf("Database count error: %v\n", err)
-		return nil, err
-	}
+	db.Count(&totalItems)
 	totalPages := int(math.Ceil(float64(totalItems) / float64(limit)))
-	fmt.Println("Validation passed, returning success")
+
 	return &PaginationData{
 		Offset:     offset,
 		Limit:      limit,
