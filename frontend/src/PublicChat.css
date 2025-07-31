@@ -97,6 +97,7 @@
     font-size: 14px;
     margin-top: 6px;
     margin-left: 13px;
+    text-align: left; /* ✅ Add this line */
   }
   
   .message-component {
