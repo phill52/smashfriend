@@ -37,7 +37,7 @@ func GetUsers(c *gin.Context) {
 			return
 		} else {
 			response := utils.GetResponse(nil, nil, http.StatusInternalServerError, "")
-			c.JSON(http.StatusInternalServerError, *response)
+			c.JSON(http.StatusInternalServerError, response)
 			return
 		}
 	}
