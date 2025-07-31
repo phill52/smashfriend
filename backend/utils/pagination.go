@@ -47,11 +47,11 @@ func GetPaginationData(db *gorm.DB, page int, limit int) (*PaginationData, error
 	}, nil
 }
 
-func PaginateData(db *gorm.DB, page, limit int) (*gorm.DB, error) {
+func PaginateData(db *gorm.DB, page, limit int) (*gorm.DB, *PaginationData, error) {
 	pagination, err := GetPaginationData(db, page, limit)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-
-	return db.Limit(pagination.Limit).Offset(pagination.Offset), nil
+	data := db.Limit(pagination.Limit).Offset(pagination.Offset)
+	return data, pagination, nil
 }

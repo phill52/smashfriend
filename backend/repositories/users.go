@@ -8,17 +8,27 @@ import (
 	"smashfriend/utils"
 )
 
-func GetUsers(page, limit int) ([]models.User, error) {
+type PaginatedUsers struct {
+	Users      []models.User
+	Pagination utils.PaginationData
+}
+
+func GetPaginatedUsers(page, limit int) (*PaginatedUsers, error) {
 	var users []models.User
 	query := database.DB.Model(&users)
 
-	paginatedQuery, err := utils.PaginateData(query, page, limit)
+	paginatedQuery, paginationData, err := utils.PaginateData(query, page, limit)
 	if err != nil {
 		return nil, err
 	}
 
 	result := paginatedQuery.Find(&users)
-	return users, result.Error
+
+	paginatedUsers := &PaginatedUsers{
+		Users:      users,
+		Pagination: *paginationData,
+	}
+	return paginatedUsers, result.Error
 }
 
 func GetUser(id string) (*models.User, error) {

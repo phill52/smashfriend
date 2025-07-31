@@ -1,41 +1,35 @@
 package utils
 
 import (
-	"smashfriend/database"
 	"smashfriend/utils/response"
 )
 
-func GetResponse(model interface{}, pagination interface{}, page, limit *int, statusCode int, message string) *response.Response {
-	meta, err := GetMetaData(model, pagination, page, limit, message, statusCode)
-	if err != nil {
-		response := response.Response{}
+func GetResponse(data, pagination interface{}, statusCode int, message string) *response.Response {
+	meta := GetMetaData(pagination, statusCode, message)
+	if meta.Pagination == nil && statusCode != 200 {
 		responseError := GetError(message, statusCode)
-		response.Error = *responseError
-		response.Meta = *meta
-		return &response
+		return &response.Response{
+			Meta:  *meta,
+			Error: *responseError,
+		}
 	}
-	response := &response.Response{
-		Data: model,
+	return &response.Response{
+		Data: data,
 		Meta: *meta,
 	}
-	return response
 }
 
-func GetMetaData(model interface{}, pagination interface{}, page, limit *int, message string, statusCode int) (*response.Meta, error) {
+func GetMetaData(paginationData interface{}, statusCode int, message string) *response.Meta {
 	response := response.Meta{
 		Message: message,
 		Status:  statusCode,
 	}
 
-	if pagination != nil {
-		query := database.DB.Model(&model)
-		paginationData, err := GetPaginationData(query, *page, *limit)
-		if err != nil {
-			return nil, err
-		}
-		response.Pagination = *paginationData
+	if paginationData != nil {
+		response.Pagination = paginationData
+		return &response
 	}
-	return &response, nil
+	return &response
 }
 
 func GetError(message string, statusCode int) *response.Error {
