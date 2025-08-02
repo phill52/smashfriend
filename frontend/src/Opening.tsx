@@ -1,4 +1,3 @@
-import React from 'react';
 import './Opening.css';
 
 function Opening() {
@@ -7,7 +6,10 @@ function Opening() {
       
       {/* Navbar */}
       <nav className="navbar">
-        <div className="logo-box">Logo</div>
+        <div className="logo-box">
+          <img className="logo-in-navbar" src="/logo_.png" alt="logo" />
+          <span className="logo-text">STOCKTANK</span>
+        </div>
         <div className="navbar-menu">
           <span>Home</span>
           <span>Explore</span>
@@ -62,7 +64,13 @@ function Opening() {
 
           {/* Foreground Content */}
           <div className="content-wrapper">
-            <div className="circle-logo">Logo</div>
+
+            <div className="front-logo">
+
+              <img className="circle-logo" src="/logo_.png" alt="logo big" />
+              <span className="front-logo-text">STOCKTANK</span>
+
+            </div>
 
             <div className="text-button-section">
 
