@@ -10,7 +10,8 @@ html, body {
   height: 100%;
   overflow-x: hidden;
   font-family: 'Geist', sans-serif;
-  background-color: black;
+  background: #1a1722
+
 }
 
 .navbar {
@@ -66,32 +67,20 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 76px);
+  min-height: calc(100vh - 76px);  
 }
 
 .figma-filled-section {
   position: relative;
   width: 100vw;
   height: 900px;
-  background-color: #1A1722;
   border-top: 1px solid #38334E;
   border-bottom: 1px solid #38334E;
+  background: linear-gradient(180deg, #312843 0%, #252034 52%, #15151F 100%);
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-}
-
-/* Optional overlay to darken background */
-.figma-filled-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: rgba(13, 12, 20, 0.7); /* Dark transparent overlay */
-  z-index: 0;
 }
 
 .stage-image-grid {
