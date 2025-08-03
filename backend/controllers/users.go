@@ -53,7 +53,7 @@ func GetUser(c *gin.Context) {
 
 	user, err := repositories.GetUser(id)
 	if err != nil {
-		response := utils.GetResponse(nil, nil, http.StatusInternalServerError, "")
+		response := utils.GetResponse(nil, nil, http.StatusInternalServerError, err.Error())
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}

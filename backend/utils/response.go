@@ -6,7 +6,7 @@ import (
 
 func GetResponse(data, pagination interface{}, statusCode int, message string) *response.Response {
 	meta := GetMetaData(pagination, statusCode, message)
-	if meta.Pagination == nil && statusCode != 200 {
+	if data == nil && meta.Pagination == nil {
 		responseError := GetError(message, statusCode)
 		return &response.Response{
 			Meta:  *meta,
