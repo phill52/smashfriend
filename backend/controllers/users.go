@@ -17,28 +17,33 @@ func GetUsers(c *gin.Context) {
 
 	page, err := strconv.Atoi(pageStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "page parameter not valid"})
+		response := utils.GetErrorResponse(http.StatusBadRequest, "Page parameter is not a number")
+		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 	limit, err := strconv.Atoi(limitStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "limit parameter not valid"})
+		response := utils.GetErrorResponse(http.StatusBadRequest, "Limit parameter is not a number")
+		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	var paginationErr *utils.PaginationError
-	users, err := repositories.GetUsers(page, limit)
+	paginatedUsers, err := repositories.GetPaginatedUsers(page, limit)
 	if err != nil {
 		if errors.As(err, &paginationErr) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": paginationErr.Error()})
+			response := utils.GetErrorResponse(http.StatusBadRequest, paginationErr.Error())
+			c.JSON(http.StatusBadRequest, response)
 			return
 		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			response := utils.GetErrorResponse(http.StatusInternalServerError, "")
+			c.JSON(http.StatusInternalServerError, response)
 			return
 		}
 	}
 
-	c.JSON(http.StatusOK, users)
+	response := utils.GetResponse(paginatedUsers.Users, paginatedUsers.Pagination, http.StatusOK, "Success")
+	c.JSON(http.StatusOK, response)
 }
 
 func GetUser(c *gin.Context) {
@@ -46,34 +51,42 @@ func GetUser(c *gin.Context) {
 
 	user, err := repositories.GetUser(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		response := utils.GetErrorResponse(http.StatusInternalServerError, err.Error())
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+
+	response := utils.GetResponse(user, nil, http.StatusOK, "Success")
+	c.JSON(http.StatusOK, response)
 }
 
 func CreateUser(c *gin.Context) {
 	username := c.PostForm("username")
 
 	if len(username) < 3 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username must be at least 3 characters long"})
+		response := utils.GetErrorResponse(http.StatusBadRequest, "Username must be at least 3 characters long")
+		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	existing_user, err := repositories.GetUserByUsername(username)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		response := utils.GetErrorResponse(http.StatusInternalServerError, "")
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 	if existing_user != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "A user with this username already exists"})
+		response := utils.GetErrorResponse(http.StatusBadRequest, "A user with this username already exists")
+		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	user, err := repositories.CreateUser(username)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		response := utils.GetErrorResponse(http.StatusInternalServerError, "")
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+	response := utils.GetResponse(user, nil, http.StatusOK, "Success")
+	c.JSON(http.StatusOK, response)
 }
