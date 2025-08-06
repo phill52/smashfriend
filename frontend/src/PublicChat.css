@@ -1,0 +1,136 @@
+.main-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 76px);
+  }
+  
+  .public-chat {
+    position: relative;
+    background-color: #171721; 
+    border: 1px solid #46405F;
+    width: 500px;
+    height: 685px;
+    border-radius: 10px;
+  }
+  
+  .vert-wrap {
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .title-text {
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    width: 433px;
+    text-align: left;
+    margin-top: 31px;
+    margin-bottom: 31px;
+  }
+  
+  .chat-log {
+    background-color: #191E29;
+    width: 433px;
+    height: 496px;
+    border-radius: 10px;
+    border: 1px solid #585179;
+    margin-bottom: 13px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #46405F transparent;
+  }
+  
+  /* Webkit scrollbar styling */
+  .chat-log::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .chat-log::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+  }
+  
+  .chat-log::-webkit-scrollbar-thumb {
+    background-color: #46405F;
+    border-radius: 5px;
+  }
+  
+  .chat-header {
+    margin-top: 20px;
+    height: 1px;
+    background-color: #585179;
+    width: 100%;
+  }
+  
+  .divider {
+    height: 1px;
+    background-color: #585179;
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  .message-header {
+    margin-top: 8px;
+    margin-left: 13px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .name-and-date {
+    font-weight: bold;
+    color: #CACACA;
+    font-size: 12px;
+  }
+  
+  .name-date-spacing {
+    display: flex;
+    gap: 287px;
+    margin-left: 6px;
+  }
+  
+  .text-message {
+    font-weight: bold;
+    color: white;
+    font-size: 14px;
+    margin-top: 6px;
+    margin-left: 13px;
+    text-align: left; /* ✅ Add this line */
+  }
+  
+  .message-component {
+    width: 432px;
+    height: 42px;
+    background-color: #191E29;
+    border-radius: 10px;
+    border: 1px solid #585179;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    font-weight: bold;
+    font-size: 13px;
+    justify-content: space-between;
+  }
+  
+  .messageIcon {
+    font-size: 16px;
+    color: white;
+    margin-right: 15px;
+    cursor: pointer;
+  }
+  
+  .message-input {
+    background-color: transparent;
+    border: none;
+    color: rgb(131, 125, 125);
+    font-weight: bold;
+    font-size: 13px;
+    outline: none;
+    flex: 1;
+  }
+
+  
+  
