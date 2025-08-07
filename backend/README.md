@@ -13,6 +13,13 @@
     go mod tidy
     ```
 
+    There is a dev script that reloads the application whenever you make a change. This requires [fswatch](https://github.com/emcrisostomo/fswatch)
+    I'm assuming most of us are on MacOS with brew installed, so you can just run this:
+
+    ```sh
+    brew install fswatch
+    ```
+
 2. **Set up the env:**
 
     There's an `env.example` that has everything we need for now. We may need to add more thing and instructions to it later,
@@ -44,4 +51,10 @@
 
     ```sh
     go run main.go
+    ```
+
+    If you are working in development, I encourage you to use the dev script:
+
+    ```sh
+    ./dev.sh
     ```
