@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import router from "./router";
+import router from "./routes/router";
 
 const root = document.getElementById("root")!;
 
