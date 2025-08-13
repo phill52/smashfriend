@@ -1,0 +1,77 @@
+.main-container {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    min-height: calc(100vh - 76px);
+    color: white;
+    margin-right: 10px;
+  }
+
+  .profile-component {
+    width: 175px;
+    height: 450px;
+    border: 1px solid #38334E;
+    text-align: center;
+    background-color: #191E29;
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .api-information {
+    font-size: 10px;
+    width: 100%;
+    height: 100%;
+    color: #CACACA;
+    margin-bottom: 5px;
+  }
+
+  .profile-data {
+    padding-top: 5px;
+    font-size: 14px;
+  }
+
+   .main-content {
+    padding: 1rem; 
+  }
+
+  .img-placeholder {
+    border-radius: 50%;
+    background-color: white;
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+  }
+
+  .rank-information {
+    padding-top: 10px;
+  }
+  
+  .triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 30.5px solid transparent;
+    border-right: 30.5px solid transparent;
+    border-top: 61px solid white;
+    margin: 0 auto;
+}
+
+#win-rate {
+    margin-top: 5px;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+#profile-button {
+    background-color: #96619A;
+    border-radius: 10px;
+    font-size: 10px;
+    gap: 8px;
+    font-weight: bold;
+    padding: 8px 16px;
+}
+
+
+
+
