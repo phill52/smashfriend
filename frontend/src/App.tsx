@@ -55,7 +55,7 @@ function App() {
                 <button
                     onClick={async () => {
                         const token = await getToken();
-                        fetch("http://localhost:8080/api/users", {
+                        await fetch("http://localhost:8080/api/users", {
                             method: "GET",
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -65,6 +65,9 @@ function App() {
                             .then((res) => res.json())
                             .then((data) => {
                                 console.log(data);
+                            })
+                            .catch((err) => {
+                                console.error(err);
                             });
                     }}
                     className="bg-blue-500 text-white p-2 rounded-md">
