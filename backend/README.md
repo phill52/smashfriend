@@ -15,14 +15,16 @@
 
 2. **Set up the env:**
 
-    There's an `env.example` that has everything we need for now. We may need to add more thing and instructions to it later,
-    but for now this is all we need. You can just run
+    There's an `env.example`. Run
 
     ```sh
     cp env.example .env
     ```
 
-    to create the env file.
+    to create the env file, and put in the API keys (from the discord channel). **Make sure the API keys are protected and NEVER committed**
+
+    **Note**: The `.env` files for the frontend and backend are different in development. You need to have the file in both directories
+    for them to apply when you run the application.
 
 3. **Set up the database:**
    The database is set up in docker for now. If you want to run your own database, that's fine, just change the env file accordingly.
