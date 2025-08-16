@@ -47,7 +47,6 @@ func GetOrCreateUserFromClerk(clerkUser *clerk.User) (*models.User, error) {
 	var user models.User
 	result := database.DB.Where("clerk_id = ?", clerkUser.ID).First(&user)
 	if result.Error == nil {
-
 		updates := map[string]interface{}{}
 		if clerkUser.ImageURL != nil && *clerkUser.ImageURL != user.ProfilePicture {
 			updates["profile_picture"] = clerkUser.ImageURL
@@ -65,7 +64,6 @@ func GetOrCreateUserFromClerk(clerkUser *clerk.User) (*models.User, error) {
 		IsActive: true,
 		LastSeen: &time.Time{},
 	}
-
 	if err := database.DB.Create(&user).Error; err != nil {
 		return nil, err
 	}
