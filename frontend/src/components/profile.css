@@ -36,7 +36,7 @@
     padding: 1rem; 
   }
 
-  .img-placeholder {
+  img {
     border-radius: 50%;
     background-color: white;
     height: 100px;
@@ -70,6 +70,7 @@
     gap: 8px;
     font-weight: bold;
     padding: 8px 16px;
+    cursor: pointer;
 }
 
 

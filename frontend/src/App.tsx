@@ -9,11 +9,20 @@
 //import "./index.css"
 import "./App.css";
 import Profile from "./components/profile"
+import reactPath from './assets/react.svg'
 
 function App() {
     return (
         <div>
-            <Profile />
+            <Profile 
+                imageUrl={reactPath}
+                userName="dan"
+                userId="123456789"
+                rank="Universal"
+                elo_rating="2500"
+                win_rate="152"
+                loss_rate="53"
+            />
         </div>
 
             // {/* <SignedOut>
