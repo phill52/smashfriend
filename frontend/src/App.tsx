@@ -20,8 +20,8 @@ function App() {
                 userId="123456789"
                 rank="Universal"
                 elo_rating="2500"
-                win_rate="152"
-                loss_rate="53"
+                games_won={152}
+                games_lost={53}
             />
         </div>
 
