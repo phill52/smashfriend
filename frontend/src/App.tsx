@@ -6,6 +6,7 @@ import {
     SignedOut,
     SignOutButton,
     UserButton,
+    useAuth,
 } from "@clerk/clerk-react";
 
 import reactLogo from "./assets/react.svg";
@@ -14,6 +15,8 @@ import "./App.css";
 
 function App() {
     const [count, setCount] = useState(0);
+
+    const { getToken } = useAuth();
 
     return (
         <>
@@ -48,6 +51,28 @@ function App() {
             <SignedIn>
                 <UserButton />
                 <SignOutButton />
+
+                <button
+                    onClick={async () => {
+                        const token = await getToken();
+                        await fetch("http://localhost:8080/api/users", {
+                            method: "GET",
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                            },
+                        })
+                            .then((res) => res.json())
+                            .then((data) => {
+                                console.log(data);
+                            })
+                            .catch((err) => {
+                                console.error(err);
+                            });
+                    }}
+                    className="bg-blue-500 text-white p-2 rounded-md">
+                    Ping backend
+                </button>
             </SignedIn>
         </>
     );

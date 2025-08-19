@@ -2,10 +2,12 @@ package repositories
 
 import (
 	"errors"
-
 	"smashfriend/database"
 	"smashfriend/models"
 	"smashfriend/utils"
+	"time"
+
+	"github.com/clerk/clerk-sdk-go/v2"
 )
 
 type PaginatedUsers struct {
@@ -36,6 +38,34 @@ func GetUser(id string) (*models.User, error) {
 	result := database.DB.First(&user, id)
 	if result.Error != nil {
 		return nil, result.Error
+	}
+
+	return &user, nil
+}
+
+func GetOrCreateUserFromClerk(clerkUser *clerk.User) (*models.User, error) {
+	var user models.User
+	result := database.DB.Where("clerk_id = ?", clerkUser.ID).First(&user)
+	if result.Error == nil {
+		updates := map[string]interface{}{}
+		if clerkUser.ImageURL != nil && *clerkUser.ImageURL != user.ProfilePicture {
+			updates["profile_picture"] = clerkUser.ImageURL
+		}
+
+		database.DB.Model(&user).Updates(updates)
+		return &user, nil
+	}
+
+	user = models.User{
+		ClerkID: clerkUser.ID,
+		Username: "",
+		DisplayName: "",
+		ProfilePicture: *clerkUser.ImageURL,
+		IsActive: true,
+		LastSeen: &time.Time{},
+	}
+	if err := database.DB.Create(&user).Error; err != nil {
+		return nil, err
 	}
 
 	return &user, nil
