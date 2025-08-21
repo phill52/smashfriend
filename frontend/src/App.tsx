@@ -1,37 +1,43 @@
-// import {
-//     SignedIn,
-//     SignInButton,
-//     SignedOut,
-//     SignOutButton,
-//     UserButton,
-// } from "@clerk/clerk-react";
+import {
+    SignedIn,
+    SignInButton,
+    SignedOut,
+    SignOutButton,
+    UserButton,
+} from "@clerk/clerk-react";
 
-//import "./index.css"
+import "./index.css"
 import "./App.css";
 import Profile from "./components/profile"
-import reactPath from './assets/react.svg'
+import react_path from './assets/react.svg'
+
+const user = {
+    user_id: "123456789",
+    image_url: react_path,
+    username: "dan",
+    rank: "Universal",
+    elo_rating: "2500",
+    games_won: 152,
+    games_lost: 53
+};
 
 function App() {
     return (
+        <>
         <div>
             <Profile 
-                imageUrl={reactPath}
-                userName="dan"
-                userId="123456789"
-                rank="Universal"
-                elo_rating="2500"
-                games_won={152}
-                games_lost={53}
+                user={user}
             />
         </div>
 
-            // {/* <SignedOut>
-            //     <SignInButton />
-            // </SignedOut>
-            // <SignedIn>
-            //     <UserButton />
-            //     <SignOutButton />
-            // </SignedIn> */}
+            <SignedOut>
+                <SignInButton />
+            </SignedOut>
+            <SignedIn>
+                <UserButton />
+                <SignOutButton />
+            </SignedIn>
+        </>
     );
 }
 
