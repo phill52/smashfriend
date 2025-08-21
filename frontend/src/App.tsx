@@ -30,10 +30,7 @@ function App() {
 
   return (
     <>
-      {/* Your Profile component */}
       <Profile user={user} />
-
-      {/* Main branch's Vite app content */}
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
