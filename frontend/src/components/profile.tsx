@@ -5,7 +5,7 @@ function ProfileComponent({ user }) {
     (user.games_won / (user.games_won + user.games_lost)) * 100,
   );
   return (
-    <div className="flex min-h-[calc(100vh-4.75rem)] w-full justify-end text-white">
+    <div className="flex w-full justify-end text-white">
       <div className="mt-1.5 mr-2 rounded-lg border border-[#38334E] bg-[#191E29] p-2.5 text-center font-bold text-white">
         Your Profile
         <div className="p-4">
