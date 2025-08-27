@@ -52,7 +52,6 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
 
-      {/* Clerk authentication (both versions had this) */}
       <SignedOut>
         <SignInButton />
       </SignedOut>
