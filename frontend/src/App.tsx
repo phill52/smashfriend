@@ -10,13 +10,12 @@ import { useState } from "react";
 import "./index.css";
 import "./App.css";
 import Profile from "./components/profile";
-import react_path from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import reactLogo from "./assets/react.svg";
 
 const user = {
   user_id: "123456789",
-  image_url: react_path,
+  image_url: reactLogo,
   username: "dan",
   rank: "Universal",
   elo_rating: "2500",
