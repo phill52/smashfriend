@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import "./index.css";
 import "./App.css";
+import Matchmaking from "./components/matchmaking";
 import Profile from "./components/profile";
 import viteLogo from "/vite.svg";
 import reactLogo from "./assets/react.svg";
@@ -28,7 +29,8 @@ function App() {
   const { getToken } = useAuth();
 
   return (
-    <>
+    <div className="bg-[#15151F]">
+      <Matchmaking />
       <Profile user={user} />
       <div>
         <a href="https://vite.dev" target="_blank">
@@ -80,7 +82,7 @@ function App() {
           Ping backend
         </button>
       </SignedIn>
-    </>
+    </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import "./profile.css";
+import "./styles.css";
 
 function ProfileComponent({ user }) {
   const win_rate = Math.floor(
@@ -36,7 +36,7 @@ function ProfileComponent({ user }) {
               </div>
             </div>
             <div>
-              <button className="mt-2 cursor-pointer rounded-lg bg-[#96619A] px-3 py-2 text-sm font-bold">
+              <button className="bg-pink-purple mt-2 cursor-pointer rounded-lg px-3 py-2 text-sm font-bold">
                 Full Profile &gt;
               </button>
             </div>
