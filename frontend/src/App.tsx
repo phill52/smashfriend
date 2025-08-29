@@ -30,8 +30,10 @@ function App() {
 
   return (
     <div className="bg-[#15151F]">
-      <Matchmaking />
-      <Profile user={user} />
+      <div className="flex justify-center rounded-md border border-[#38334E] bg-linear-to-b from-[#312843] via-[#252034] to-[#15151F]">
+        <Matchmaking />
+        <Profile user={user} />
+      </div>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
