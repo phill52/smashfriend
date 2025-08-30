@@ -1,4 +1,3 @@
-import React from 'react';
 import './PublicChat.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
@@ -34,69 +33,42 @@ function PublicChat() {
         text: input,
         profileImg: "/enzoPFP.png",
     };
-
         setMessages(prev => [...prev, mockMessage]);
         setInput("");
-
     };
 
     return (
         <div className="main-section">
-
             <div className="public-chat">
-
                 <div className="vert-wrap">
-
                     <div className="title-text">Public Chat</div>
-
                     <div className="chat-log">
-
                         <div className="chat-header" />
-
                         {messages.map((msg) => (
-
                             <div key={msg.id}>
-
                                 <div className="message-header">
-
                                     <img src={msg.profileImg} alt={`${msg.name} pfp`} />
-
                                     <div className="name-date-spacing">
-
                                         <div className="name-and-date">{msg.name}</div>
-
                                         <div className="name-and-date">{msg.time}</div>
-
                                     </div>
                                 </div>
-
                                 <div className="text-message">{msg.text}</div>
-
                                 <div className="divider" />
-
                             </div>
-
                         ))}
-
                         <div ref={bottomRef} />
-
                     </div>
-
                     <div className="message-component">
-
                         <input
-
                             type="text"
                             placeholder="Message Here"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             className="message-input"
                             onKeyDown={(e) => e.key === "Enter" && handleSend()}
-
                         />
-
                         <FontAwesomeIcon icon={faPaperPlane} className="messageIcon" onClick={handleSend} />
-
                     </div>
                 </div>
             </div>
