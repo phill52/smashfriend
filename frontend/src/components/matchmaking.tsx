@@ -4,12 +4,11 @@ function MatchmakingComponent() {
   const [selectedValue, setSelectedValue] = useState("");
 
   const handleChange = (event) => {
-    console.log("selected ", event.target.value);
     setSelectedValue(event.target.value);
   };
 
   return (
-    <div className="flex h-120 justify-center">
+    <div className="flex justify-center">
       <div className="text-white-700 m-auto h-72 w-96 justify-center rounded-md bg-[#171721] text-center font-bold text-white">
         <h1 className="pt-4 text-2xl">Find a Match</h1>
         <h2 className="text-smokey-white">Mode</h2>

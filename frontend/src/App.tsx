@@ -32,7 +32,7 @@ function App() {
     <div className="bg-[#15151F]">
       <div className="flex justify-center rounded-md border border-[#38334E] bg-linear-to-b from-[#312843] via-[#252034] to-[#15151F]">
         <Matchmaking />
-        <Profile user={user} />
+        {/* <Profile user={user} /> */}
       </div>
       <div>
         <a href="https://vite.dev" target="_blank">
