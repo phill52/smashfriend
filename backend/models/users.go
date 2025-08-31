@@ -16,6 +16,6 @@ type User struct {
 
 	ProfilePicture string `json:"profile_picture"`
 
-	IsActive bool      `json:"is_active" gorm:"default:true"`
+	IsActive bool       `json:"is_active" gorm:"default:true"`
 	LastSeen *time.Time `json:"last_seen"`
 }
