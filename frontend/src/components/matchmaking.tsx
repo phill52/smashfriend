@@ -2,21 +2,33 @@ import { useState } from "react";
 
 function MatchmakingComponent() {
   const [selectedValue, setSelectedValue] = useState("");
+  const [isRanked, setIsRanked] = useState(false);
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
 
+  const handleModeButtonClick = (isRanked) => {
+    setIsRanked(isRanked);
+    console.log(isRanked);
+  };
+
   return (
     <div className="flex justify-center">
-      <div className="text-white-700 m-auto h-72 w-96 justify-center rounded-md bg-[#171721] text-center font-bold text-white">
+      <div className="text-white-700 ${isRanked bg-[#171721]} m-auto h-72 w-96 justify-center rounded-md text-center font-bold text-white">
         <h1 className="pt-4 text-2xl">Find a Match</h1>
         <h2 className="text-smokey-white">Mode</h2>
         <div className="flex justify-center gap-2 px-4 py-2">
-          <button className="mr-2 w-24 rounded-xl border border-[#7165AA] bg-[#201F2f] px-4 py-2 text-xs">
+          <button
+            className={`mr-2 w-24 cursor-pointer rounded-xl border ${isRanked ? "border-[#7165AA] bg-[#201F2f]" : "bg-hot-pink border-neon-pink"} px-4 py-2 text-xs`}
+            onClick={() => handleModeButtonClick(false)}
+          >
             Unranked
           </button>
-          <button className="bg-hot-pink border-neon-pink w-24 rounded-xl border text-xs">
+          <button
+            className={`${isRanked ? "bg-hot-pink border-neon-pink" : "border-[#7165AA] bg-[#201F2f]"} w-24 cursor-pointer rounded-xl border text-xs`}
+            onClick={() => handleModeButtonClick(true)}
+          >
             Ranked
           </button>
         </div>
