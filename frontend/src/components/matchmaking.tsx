@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function MatchmakingComponent() {
   const [selectedValue, setSelectedValue] = useState("");
-  const [gameMode, setGameMode] = useState("");
+  const [gameMode, setGameMode] = useState("Unranked");
   const [format, setFormat] = useState("");
 
   const handleGameModeClick = (gameMode) => {
