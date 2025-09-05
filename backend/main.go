@@ -34,7 +34,7 @@ func main() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	err = database.AutoMigrate(db, &models.User{})
+	err = database.AutoMigrate(db, &models.User{}, &models.ChatRoom{}, &models.Chat{})
 	if err != nil {
 		log.Fatal("Failed to migrate database:", err)
 	}
