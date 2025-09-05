@@ -2,26 +2,22 @@ import { useState } from "react";
 
 function MatchmakingComponent() {
   const [selectedValue, setSelectedValue] = useState("");
-  const [isRanked, setIsRanked] = useState(false);
-  const [bestOf, setBestOf] = useState(null);
+  const [gameMode, setGameMode] = useState("");
+  const [format, setFormat] = useState("");
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-
-  const handleModeButtonClick = (isRanked) => {
-    setIsRanked(isRanked);
-  };
-
-  const handleBestOfClick = (value) => {
-    setBestOf(value);
+  const handleGameModeClick = (gameMode) => {
+    setGameMode(gameMode);
+    setFormat("");
   };
 
   const handleQueueButton = () => {
-    console.log(`Queue button clicked: ${isRanked} ${bestOf}`);
+    console.log(`Queue button clicked: ${gameMode} ${format}`);
   };
 
-  const bestOfOptions = isRanked ? ["Bo3"] : ["Bo3", "Bo5", "Any"];
+  const gameModeMap = new Map([
+    ["Unranked", ["Bo3", "Bo5", "Any"]],
+    ["Ranked", ["Bo3"]],
+  ]);
 
   return (
     <div className="flex justify-center">
@@ -29,34 +25,32 @@ function MatchmakingComponent() {
         <h1 className="pt-4 text-2xl">Find a Match</h1>
         <h2 className="text-smokey-white">Mode</h2>
         <div className="flex justify-center gap-2 px-4 py-2">
-          <button
-            className={`mr-2 w-24 cursor-pointer rounded-xl border ${isRanked ? "border-[#7165AA] bg-[#201F2f]" : "bg-hot-pink border-neon-pink"} px-4 py-2 text-xs`}
-            onClick={() => handleModeButtonClick(false)}
-          >
-            Unranked
-          </button>
-          <button
-            className={`${isRanked ? "bg-hot-pink border-neon-pink" : "border-[#7165AA] bg-[#201F2f]"} w-24 cursor-pointer rounded-xl border text-xs`}
-            onClick={() => handleModeButtonClick(true)}
-          >
-            Ranked
-          </button>
+          {[...gameModeMap.keys()].map((key) => (
+            <button
+              key={key}
+              className={`mr-2 w-24 cursor-pointer rounded-xl border ${gameMode === key ? "bg-hot-pink border-neon-pink" : "border-[#7165AA] bg-[#201F2f]"} px-4 py-2 text-xs`}
+              onClick={() => handleGameModeClick(key)}
+            >
+              {key}
+            </button>
+          ))}
         </div>
         <h2 className="text-smokey-white">Best of</h2>
         <div className="m-auto flex flex-col justify-center">
           <div className="my-3 flex">
-            {bestOfOptions.map((option) => (
-              <button
-                key={option}
-                className={`${bestOf === option ? "bg-hot-pink border-neon-pink" : "border-[#7165AA] bg-[#201F2f]"} m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs`}
-                onClick={() => handleBestOfClick(option)}
-              >
-                {option}
-              </button>
-            ))}
+            {gameMode &&
+              gameModeMap.get(gameMode)?.map((value) => (
+                <button
+                  key={value}
+                  className={`${format === value ? "bg-hot-pink border-neon-pink" : "border-[#7165AA] bg-[#201F2f]"} m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs`}
+                  onClick={() => setFormat(value)}
+                >
+                  {value}
+                </button>
+              ))}
           </div>
           <button
-            className="bg-pink-purple m-auto self-start rounded-xl border border-[#38334E] px-10 py-2 text-xs"
+            className="bg-pink-purple m-auto cursor-pointer self-start rounded-xl border border-[#38334E] px-10 py-2 text-xs"
             onClick={() => handleQueueButton()}
           >
             Queue
@@ -73,7 +67,7 @@ function MatchmakingComponent() {
                 value="on"
                 type="radio"
                 checked={selectedValue === "on"}
-                onChange={handleChange}
+                onChange={(event) => setSelectedValue(event?.target.value)}
               />
               On
             </label>
@@ -85,7 +79,7 @@ function MatchmakingComponent() {
                 name="off"
                 value="off"
                 checked={selectedValue === "off"}
-                onChange={handleChange}
+                onChange={(event) => setSelectedValue(event.target.value)}
               />
               Off
             </label>
