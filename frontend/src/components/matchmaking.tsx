@@ -24,7 +24,7 @@ function MatchmakingComponent() {
   return (
     <div className="flex justify-center">
       <div
-        className={`border-purple-midnight text-white-700 m-auto h-72 w-96 justify-center rounded-md border bg-[#171721] text-center font-bold text-white`}
+        className={`border-purple-midnight text-white-700 bg-deep-shadow m-auto h-72 w-96 justify-center rounded-md border text-center font-bold text-white`}
       >
         <h1 className="pt-4 text-2xl">Find a Match</h1>
         <h2 className="text-smokey-white">Mode</h2>
@@ -32,7 +32,7 @@ function MatchmakingComponent() {
           {gameModeKeys.map((key) => (
             <button
               key={key}
-              className={`mr-2 w-24 cursor-pointer rounded-xl border ${gameMode === key ? "bg-hot-pink border-neon-pink" : "border-[#7165AA] bg-[#201F2f]"} px-4 py-2 text-xs`}
+              className={`mr-2 w-24 cursor-pointer rounded-xl border ${gameMode === key ? "bg-hot-pink border-neon-pink" : "border-twilight-purple bg-shadow-violet"} transform px-4 py-2 text-xs transition-all duration-200 ease-in-out hover:scale-105 active:scale-95`}
               onClick={() => handleGameModeClick(key)}
             >
               {key}
@@ -45,7 +45,7 @@ function MatchmakingComponent() {
             {gameModeObject[gameMode]?.map((value) => (
               <button
                 key={value}
-                className={`${format === value ? "bg-hot-pink border-neon-pink" : "border-[#7165AA] bg-[#201F2f]"} m-auto transform cursor-pointer self-start rounded-xl border px-10 py-2 text-xs transition-all duration-300 ease-in-out`}
+                className={`${format === value ? "bg-hot-pink border-neon-pink" : "border-twilight-purple bg-shadow-violet"} m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs`}
                 onClick={() => setFormat(value)}
               >
                 {value}
@@ -53,7 +53,7 @@ function MatchmakingComponent() {
             ))}
           </div>
           <button
-            className="bg-pink-purple m-auto cursor-pointer self-start rounded-xl border border-[#38334E] px-10 py-2 text-xs transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+            className="bg-pink-purple border-violet-fog m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs"
             onClick={() => handleQueueButton()}
           >
             Queue
