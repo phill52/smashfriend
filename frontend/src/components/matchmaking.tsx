@@ -3,20 +3,19 @@ import { useState } from "react";
 function MatchmakingComponent() {
   const [selectedValue, setSelectedValue] = useState("");
   const [gameMode, setGameMode] = useState("Unranked");
-  const [format, setFormat] = useState("");
-  const [isQueueDisabled, setIsQueueDisabled] = useState(true);
+  const [gameFormat, setGameFormat] = useState("");
+  const isQueueDisabled = gameFormat === "";
 
   const handleGameModeClick = (mode) => {
     if (mode == gameMode) {
       return;
     }
     setGameMode(mode);
-    setIsQueueDisabled(true);
-    setFormat("");
+    setGameFormat("");
   };
 
   const handleQueueButton = () => {
-    console.log(`Queue button clicked: ${gameMode} ${format}`);
+    console.log(`Queue button clicked: ${gameMode} ${gameFormat}`);
   };
 
   const formatsByGameModes: Record<string, string[]> = {
@@ -48,11 +47,8 @@ function MatchmakingComponent() {
             {formatsByGameModes[gameMode]?.map((value) => (
               <button
                 key={value}
-                className={`${format === value ? "bg-hot-pink border-neon-pink hover:bg-fuchsia-950" : "border-twilight-purple bg-shadow-violet"} m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs`}
-                onClick={() => {
-                  setFormat(value);
-                  setIsQueueDisabled(false);
-                }}
+                className={`${gameFormat === value ? "bg-hot-pink border-neon-pink hover:bg-fuchsia-950" : "border-twilight-purple bg-shadow-violet"} m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs`}
+                onClick={() => setGameFormat(value)}
               >
                 {value}
               </button>
