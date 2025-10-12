@@ -4,9 +4,11 @@ function MatchmakingComponent() {
   const [selectedValue, setSelectedValue] = useState("");
   const [gameMode, setGameMode] = useState("Unranked");
   const [format, setFormat] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const handleGameModeClick = (gameMode) => {
     setGameMode(gameMode);
+    setIsDisabled(true);
     setFormat("");
   };
 
@@ -32,7 +34,7 @@ function MatchmakingComponent() {
           {gameModeKeys.map((key) => (
             <button
               key={key}
-              className={`mr-2 w-24 cursor-pointer rounded-xl border ${gameMode === key ? "bg-hot-pink border-neon-pink" : "border-twilight-purple bg-shadow-violet"} transform px-4 py-2 text-xs transition-all duration-200 ease-in-out hover:scale-105 active:scale-95`}
+              className={`mr-2 w-24 cursor-pointer rounded-xl border ${gameMode === key ? "bg-hot-pink border-neon-pink hover:bg-fuchsia-950" : "border-twilight-purple bg-shadow-violet"} px-4 py-2 text-xs transition-all ease-in-out animate-in fade-in duration-300 active:scale-95`}
               onClick={() => handleGameModeClick(key)}
             >
               {key}
@@ -45,15 +47,19 @@ function MatchmakingComponent() {
             {gameModeObject[gameMode]?.map((value) => (
               <button
                 key={value}
-                className={`${format === value ? "bg-hot-pink border-neon-pink" : "border-twilight-purple bg-shadow-violet"} m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs`}
-                onClick={() => setFormat(value)}
+                className={`${format === value ? "bg-hot-pink border-neon-pink hover:bg-fuchsia-950" : "border-twilight-purple bg-shadow-violet"} m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs`}
+                onClick={() => {
+                  setFormat(value);
+                  setIsDisabled(false);
+                }}
               >
                 {value}
               </button>
             ))}
           </div>
           <button
-            className="bg-pink-purple border-violet-fog m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs"
+            disabled={isDisabled}
+            className="bg-pink-purple border-violet-fog m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs disabled:bg-pink-100 hover:bg-hot-pink"
             onClick={() => handleQueueButton()}
           >
             Queue
