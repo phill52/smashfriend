@@ -63,14 +63,14 @@ func AddUserToRoom(user *models.User, chatRoom *models.ChatRoom) error {
 		return errors.New("chat room and user must have valid IDs")
 	}
 
-	model := database.DB.Model(chatRoom)
+	model := database.DB.Model(&chatRoom)
 
 	count := model.Where("id == ?", user.ID).Association("Users").Count()
 	if count > 0 {
 		return errors.New("user is already in this chat room")
 	}
 
-	err := model.Association("Users").Append(user)
+	err := model.Association("Users").Append(&user)
 	if err != nil {
 		return err
 	}
@@ -94,7 +94,7 @@ func RemoveUserFromRoom(user *models.User, chatRoom *models.ChatRoom) error {
 		return errors.New("user is not in this chat room")
 	}
 
-	err := model.Association("Users").Delete(user)
+	err := model.Association("Users").Delete(&user)
 	if err != nil {
 		return err
 	}
