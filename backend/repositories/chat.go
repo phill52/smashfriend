@@ -87,7 +87,7 @@ func RemoveUserFromRoom(user *models.User, chatRoom *models.ChatRoom) error {
 		return errors.New("chat room and user must have valid IDs")
 	}
 
-	model := database.DB.Model(chatRoom)
+	model := database.DB.Model(&chatRoom)
 
 	count := model.Where("id = ?", user.ID).Association("Users").Count()
 	if count == 0 {
