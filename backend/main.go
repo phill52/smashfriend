@@ -10,12 +10,14 @@ import (
 	"github.com/clerk/clerk-sdk-go/v2/user"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
 
 	"smashfriend/controllers"
 	"smashfriend/database"
 	"smashfriend/models"
 	"smashfriend/repositories"
+	"smashfriend/websockets"
 )
 
 func main() {
@@ -49,6 +51,13 @@ func main() {
 		}))
 	}
 
+	hub := websockets.Hub{
+		Rooms:          make(map[string]*websockets.Room),
+		MessageChannel: make(chan websockets.Message, 100),
+		Connections:    make(map[*websocket.Conn]bool),
+	}
+	go hub.handleMessages()
+
 	protected := router.Group("/api")
 	protected.Use(clerkAuthMiddleware())
 	{
@@ -56,9 +65,11 @@ func main() {
 		protected.GET("/users/:id", controllers.GetUser)
 		protected.POST("/users", controllers.CreateUser)
 
-		log.Println("Server starting on :8080")
-		log.Fatal(http.ListenAndServe(":8080", router))
+		protected.GET("/ws", websockets.HandleWebSocket(hub))
 	}
+
+	log.Println("Server starting on :8080")
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
 func clerkAuthMiddleware() gin.HandlerFunc {
