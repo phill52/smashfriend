@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"errors"
+	"fmt"
 	"smashfriend/database"
 	"smashfriend/models"
 	"smashfriend/utils"
@@ -28,7 +29,7 @@ func GetMessagesForRoom(page, limit int) (*PaginatedMessages, error) {
 		return nil, err
 	}
 
-	result := paginatedQuery.Find(&messages)
+	result := paginatedQuery.Order("created_at desc").Find(&messages)
 
 	paginatedMessages := &PaginatedMessages{
 		Messages: messages,
@@ -55,27 +56,31 @@ func CreateChatRoom(name string, description *string) (*models.ChatRoom, error) 
 }
 
 func AddUserToRoom(user *models.User, chatRoom *models.ChatRoom) error {
-	if chatRoom == nil || user == nil {
-		return errors.New("chat room and user must not be nil")
-	}
-
-	if chatRoom.ID == 0 || user.ID == 0 {
-		return errors.New("chat room and user must have valid IDs")
-	}
-
-	model := database.DB.Model(&chatRoom)
-
-	count := model.Where("id == ?", user.ID).Association("chat_room_users").Count()
-	if count > 0 {
-		return errors.New("user is already in this chat room")
-	}
-
-	err := model.Association("chat_room_users").Append(&user)
-	if err != nil {
+	tx := database.DB.Begin()
+	if err := tx.Error; err != nil {
 		return err
 	}
 
-	return nil
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	model := tx.Model(&chatRoom)
+
+	count := model.Where("id = ?", user.ID).Association("chat_room_users").Count()
+	if count > 0 {
+		tx.Rollback()
+		return fmt.Errorf("user with id %d already exists in this chat room", user.ID)
+	}
+
+	if err := model.Association("chat_room_users").Append(&user); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func RemoveUserFromRoom(user *models.User, chatRoom *models.ChatRoom) error {
@@ -83,23 +88,31 @@ func RemoveUserFromRoom(user *models.User, chatRoom *models.ChatRoom) error {
 		return errors.New("chat room and user must not be nil")
 	}
 
-	if chatRoom.ID == 0 || user.ID == 0 {
-		return errors.New("chat room and user must have valid IDs")
-	}
+	tx := database.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
 
-	model := database.DB.Model(&chatRoom)
-
-	count := model.Where("id = ?", user.ID).Association("chat_room_users").Count()
-	if count == 0 {
-		return errors.New("user is not in this chat room")
-	}
-
-	err := model.Association("chat_room_users").Delete(&user)
-	if err != nil {
+	if err := tx.Error; err != nil {
 		return err
 	}
 
-	return nil
+	model := tx.Model(&chatRoom)
+
+	count := model.Where("id = ?", user.ID).Association("chat_room_users").Count()
+	if count == 0 {
+		tx.Rollback()
+		return errors.New("user is not in this chat room")
+	}
+	
+	if err := model.Association("chat_room_users").Delete(&user); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func CreateMessageForChatRoom(message string, user *models.User, chatRoom *models.ChatRoom) (*models.Message, error) {
@@ -109,10 +122,6 @@ func CreateMessageForChatRoom(message string, user *models.User, chatRoom *model
 
 	if user == nil || chatRoom == nil {
 		return nil, errors.New("chat room and user must not be nil")
-	}
-
-	if chatRoom.ID == 0 || user.ID == 0 {
-		return nil, errors.New("chat room and user must have valid IDs")
 	}
 
 	chatMessage := models.Message{
