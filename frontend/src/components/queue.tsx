@@ -1,4 +1,4 @@
-function QueueComponent({ gameFormat, gameMode }) {
+function QueueComponent({ gameFormat: string, gameMode: string }) {
   return (
     <div className="flex justify-center">
       <div
