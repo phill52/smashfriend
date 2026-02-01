@@ -56,7 +56,7 @@ function MatchmakingComponent() {
           </div>
           <button
             disabled={isQueueDisabled}
-            className="bg-pink-purple border-violet-fog m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs disabled:bg-pink-100 hover:bg-hot-pink"
+            className={`${isQueueDisabled ? "cursor-not-allowed disabled:bg-purple-300" : "cursor-pointer "} bg-pink-purple border-violet-fog m-auto self-start rounded-xl border px-10 py-2 text-xs hover:bg-hot-pink`}
             onClick={() => handleQueueButton()}
           >
             Queue
