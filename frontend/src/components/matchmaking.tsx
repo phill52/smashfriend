@@ -1,9 +1,10 @@
 import { useState } from "react";
+import type { GameMode, GameFormat } from "../constants/Types";
 
 function MatchmakingComponent() {
   const [selectedValue, setSelectedValue] = useState("");
-  const [gameMode, setGameMode] = useState("Unranked");
-  const [gameFormat, setGameFormat] = useState("");
+  const [gameMode, setGameMode] = useState<GameMode>("Unranked");
+  const [gameFormat, setGameFormat] = useState<GameFormat>("");
   const isQueueDisabled = gameFormat === "";
 
   const handleGameModeClick = (mode) => {
@@ -18,7 +19,7 @@ function MatchmakingComponent() {
     console.log(`Queue button clicked: ${gameMode} ${gameFormat}`);
   };
 
-  const formatsByGameModes: Record<string, string[]> = {
+  const formatsByGameModes: Record<GameMode, GameFormat[]> = {
     Unranked: ["Bo3", "Bo5", "Any"],
     Ranked: ["Bo3"],
   };
@@ -31,26 +32,26 @@ function MatchmakingComponent() {
         <h1 className="pt-4 text-2xl">Find a Match</h1>
         <h2 className="text-smokey-white">Mode</h2>
         <div className="flex justify-center gap-2 px-4 py-2">
-          {Object.keys(formatsByGameModes).map((key) => (
+          {Object.keys(formatsByGameModes).map((mode) => (
             <button
-              key={key}
-              className={`mr-2 w-24 cursor-pointer rounded-xl border ${gameMode === key ? "bg-hot-pink border-neon-pink hover:bg-fuchsia-950" : "border-twilight-purple bg-shadow-violet"} px-4 py-2 text-xs transition-all ease-in-out animate-in fade-in duration-300 active:scale-95`}
-              onClick={() => handleGameModeClick(key)}
+              key={mode}
+              className={`mr-2 w-24 cursor-pointer rounded-xl border ${gameMode === mode ? "bg-hot-pink border-neon-pink hover:bg-fuchsia-950" : "border-twilight-purple bg-shadow-violet"} px-4 py-2 text-xs transition-all ease-in-out animate-in fade-in duration-300 active:scale-95`}
+              onClick={() => handleGameModeClick(mode)}
             >
-              {key}
+              {mode}
             </button>
           ))}
         </div>
         <h2 className="text-smokey-white">Best of</h2>
         <div className="m-auto flex flex-col justify-center">
           <div className="my-3 flex">
-            {formatsByGameModes[gameMode]?.map((value) => (
+            {formatsByGameModes[gameMode]?.map((format) => (
               <button
-                key={value}
-                className={`${gameFormat === value ? "bg-hot-pink border-neon-pink hover:bg-fuchsia-950" : "border-twilight-purple bg-shadow-violet"} m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs`}
-                onClick={() => setGameFormat(value)}
+                key={format}
+                className={`${gameFormat === format ? "bg-hot-pink border-neon-pink hover:bg-fuchsia-950" : "border-twilight-purple bg-shadow-violet"} m-auto cursor-pointer self-start rounded-xl border px-10 py-2 text-xs`}
+                onClick={() => setGameFormat(format)}
               >
-                {value}
+                {format}
               </button>
             ))}
           </div>
